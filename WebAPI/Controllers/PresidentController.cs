@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using System.Web.Script.Serialization;
+using WebAPI.Models;
 using WebAPI.Models.Utilities;
 
 namespace WebAPI.Controllers
@@ -20,23 +21,26 @@ namespace WebAPI.Controllers
         #region Properties
         JavaScriptSerializer serializer = new JavaScriptSerializer();
         ResponseModel obResponse = new ResponseModel() { };
-        private readonly IPresidentService _dataFileService = DependecyFactory.GetInstance<IPresidentService>();
+        private readonly IPresidentService _presidentService = DependecyFactory.GetInstance<IPresidentService>();
 
         #endregion
 
        
         [HttpGet]       
-        public HttpResponseMessage GetAll(string GetAll)    
+        public HttpResponseMessage GetAll()    
         {
             var response = this.Request.CreateResponse(HttpStatusCode.OK);
-
-            if (GetAll == "true")
-            {
+            var presidents = new List<PresidentViewModel>();
                 try
                 {
+                foreach (var item in _presidentService.GetPresidentsFromFile())
+                {
+                    presidents.Add(new PresidentViewModel(item));
+                }
+
                     obResponse.Status = true;
 
-                    obResponse.DataResponse = _dataFileService.GetPresidentsFromFile();
+                obResponse.DataResponse = presidents;
                     obResponse.Message = "Consulta realizada exitosamente.";
 
                 }
@@ -47,8 +51,6 @@ namespace WebAPI.Controllers
                     obResponse.Message = "Error al procesar la solicitud.";
                     obResponse.InnerException = ex.Message;
                 }
-
-            }
             response.Content = new StringContent(serializer.Serialize(obResponse), Encoding.UTF8, "application/json");
             return response;
         }

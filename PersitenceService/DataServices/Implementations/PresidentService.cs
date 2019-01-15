@@ -1,17 +1,16 @@
 ﻿using Microsoft.VisualBasic.FileIO;
-using NLog;
 using PersitenceService.Common.DTO;
 using PersitenceService.DataServices.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 
 namespace PersitenceService.DataServices.Implementations
 {
     public class PresidentService : IPresidentService
     {
-        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
 
         #region constructor        
@@ -22,7 +21,8 @@ namespace PersitenceService.DataServices.Implementations
         public IEnumerable<PresidentDTO> GetPresidentsFromFile()
         {
             List<PresidentDTO> result = new List<PresidentDTO>();
-            using (TextFieldParser parser = new TextFieldParser(@"C:\Users\DFZ-23\source\repos\WebAPI\PersitenceService\Files\Presidents.csv"))
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Files\Presidents.csv");
+            using (TextFieldParser parser = new TextFieldParser(@"C:\Users\diego.jaramillo\Source\Repos\CorcoranTest\PersitenceService\Files\Presidents.csv"))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");

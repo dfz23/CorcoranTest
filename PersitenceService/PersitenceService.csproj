@@ -74,7 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Files\Presidents.csv" />
+    <None Include="Files\Presidents.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Files\Presidents.tsv" />
     <None Include="NLog.config" />
     <None Include="NLog.xsd">
