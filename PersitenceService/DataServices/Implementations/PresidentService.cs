@@ -21,8 +21,9 @@ namespace PersitenceService.DataServices.Implementations
         public IEnumerable<PresidentDTO> GetPresidentsFromFile()
         {
             List<PresidentDTO> result = new List<PresidentDTO>();
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Files\Presidents.csv");
-            using (TextFieldParser parser = new TextFieldParser(@"C:\Users\diego.jaramillo\Source\Repos\CorcoranTest\PersitenceService\Files\Presidents.csv"))
+            
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Files\Presidents.csv");
+            using (TextFieldParser parser = new TextFieldParser(path))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");

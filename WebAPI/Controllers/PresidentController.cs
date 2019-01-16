@@ -2,7 +2,6 @@
 using PersitenceService.Factory;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -15,7 +14,7 @@ namespace WebAPI.Controllers
 {
     public class PresidentController : ApiController
     {
-       
+
 
 
         #region Properties
@@ -25,32 +24,41 @@ namespace WebAPI.Controllers
 
         #endregion
 
-       
-        [HttpGet]       
-        public HttpResponseMessage GetAll()    
+
+        [HttpGet]
+        public HttpResponseMessage GetAll(string orderType)
         {
             var response = this.Request.CreateResponse(HttpStatusCode.OK);
             var presidents = new List<PresidentViewModel>();
-                try
-                {
+            try
+            {
                 foreach (var item in _presidentService.GetPresidentsFromFile())
                 {
                     presidents.Add(new PresidentViewModel(item));
                 }
 
-                    obResponse.Status = true;
+                obResponse.Status = true;
+                switch (orderType)
+                {
+                    case "asc":
+                         presidents.Sort((x, y) => x.FullName.CompareTo(y.FullName));
+                        break;
+                    case "desc":
+                        presidents.Sort((x, y) => y.FullName.CompareTo(x.FullName));
+                        break;
+                }
 
                 obResponse.DataResponse = presidents;
-                    obResponse.Message = "Consulta realizada exitosamente.";
+                obResponse.Message = "Consulta realizada exitosamente.";
 
-                }
-                catch (Exception ex)
-                {
-                    response = this.Request.CreateResponse(HttpStatusCode.InternalServerError);
-                    obResponse.Status = false;
-                    obResponse.Message = "Error al procesar la solicitud.";
-                    obResponse.InnerException = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                response = this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+                obResponse.Status = false;
+                obResponse.Message = "Error al procesar la solicitud.";
+                obResponse.InnerException = ex.Message;
+            }
             response.Content = new StringContent(serializer.Serialize(obResponse), Encoding.UTF8, "application/json");
             return response;
         }
