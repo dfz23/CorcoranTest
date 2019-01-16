@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Amadeus.LATAM.TOU.DataFileUploader.PersitenceService.Common
+namespace PersitenceService.Common
 {
     public abstract class ResponseHelperBase
     {

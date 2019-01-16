@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using PersitenceService.DataServices.Implementations;
 using PersitenceService.DataServices.Interfaces;
 
-namespace Amadeus.LATAM.TOU.DataFileUploader.PersitenceService.Config
+namespace PersitenceService.Config
 {
     class ServiceRegister : ICompositionRoot
     {
